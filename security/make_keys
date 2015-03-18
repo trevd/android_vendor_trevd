@@ -1,0 +1,40 @@
+#!/bin/bash
+
+
+function make_keys(){
+
+	local CERT="/C=US/ST=California/L=Mountain View/O=AOSP/OU=AOSP/CN=AOSP/emailAddress=aosp@android.com"
+	if [ -z "$ANDROID_BUILD_TOP" ] ; then
+		echo "Cannot Find AOSP Source Directory";
+		return ;
+	fi
+	local TARGET_DEVICE=$(get_build_var TARGET_DEVICE )
+	if [ -z "$TARGET_DEVICE" ] ; then
+		echo "Cannot Get Target Device";
+		return ;
+	fi
+	local MAKE_KEY=$ANDROID_BUILD_TOP/development/tools/make_key
+	if [ -z "$MAKE_KEY" ] ; then
+		echo "Cannot Find make_key script";
+		return ;
+	fi
+
+	local KEY_DIRECTORY=$(get_build_var PRODUCT_DEFAULT_DEV_CERTIFICATE |  xargs dirname )
+	if [ -z "$KEY_DIRECTORY" ] ; then
+		KEY_DIRECTORY=$(realpath $0 | xargs dirname )/$TARGET_DEVICE
+	fi
+	rm -rfv "$KEY_DIRECTORY"
+	if [ ! -d "$KEY_DIRECTORY" ] ; then
+		mkdir -pv "$KEY_DIRECTORY"
+	fi
+	pushd "$KEY_DIRECTORY"
+	$MAKE_KEY testkey "$CERT"
+	$MAKE_KEY platform "$CERT"
+	$MAKE_KEY shared "$CERT"
+	$MAKE_KEY media "$CERT"
+	$MAKE_KEY releasekey "$CERT"
+	popd
+
+}
+make_keys
+

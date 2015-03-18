@@ -1,0 +1,15 @@
+vendor/trevd
+============
+
+This adds a signed_ product to the lunch menu and signs the builds
+using the key set in PRODUCT_DEFAULT_DEV_CERTIFICATE.
+At the moment this is just a copy of the build/target/product/testkeys but
+this "tricks" the build system into naming them as devkeys.
+
+Obviously this is not for any serious distribution but does show an example
+of how you can sign the builds
+
+security/make_keys is an helper script should you wish to generate some
+real keys edit the CERT variable in the script to the appropriate values
+
+
