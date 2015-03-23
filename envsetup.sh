@@ -52,13 +52,19 @@ function mmp()
     done
 
 }
+function setup_ccache(){
 
+	export ANDROID_BUILD_ID=$( get_build_var BUILD_ID )
+	export ANDROID_CCACHE_DIR="$ANDROID_CCACHE_ROOT/$ANDROID_BUILD_ID"
+	if [ -d "$ANDROID_CCACHE_DIR" ] ; then
+		echo "setting ccache directory $ANDROID_CCACHE_DIR"
+		export CCACHE_DIR=$ANDROID_CCACHE_DIR
+		export USE_CCACHE=1
+	else
+		unset CCACHE_DIR
+		unset USE_CCACHE
+	fi
+}
 
-if [ -d "$ANDROID_CCACHE_ROOT" ] ; then
-	echo "setting ccache directory $ANDROID_CCACHE_ROOT"
-	export CCACHE_DIR=$ANDROID_CCACHE_ROOT
-	export USE_CCACHE=1
-else
-	unset CCACHE_DIR
-	unset USE_CCACHE
-fi
+setup_ccache
+
