@@ -13,3 +13,11 @@ security/make_keys is an helper script should you wish to generate some
 real keys edit the CERT variable in the script to the appropriate values
 
 
+envsetup.sh adds extra functionality to the android build environment
+run source vendor/trevd/envsetup.sh instead of the normal build/envsetup.sh
+to setup the build environment with the extra functions
+
+Functions :
+mmp:     Builds all of the modules in the current directory and pushes them to the device.
+
+
