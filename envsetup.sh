@@ -1,6 +1,5 @@
 source build/envsetup.sh
-export USE_CCACHE=1
-export CCACHE_DIR=$ANDROID_CCACHE_ROOT
+
 function _get_adb_device()
 {
 	local TD="device:$( get_build_var TARGET_DEVICE )"
@@ -53,3 +52,13 @@ function mmp()
     done
 
 }
+
+
+if [ -d "$ANDROID_CCACHE_ROOT" ] ; then
+	echo "setting ccache directory $ANDROID_CCACHE_ROOT"
+	export CCACHE_DIR=$ANDROID_CCACHE_ROOT
+	export USE_CCACHE=1
+else
+	unset CCACHE_DIR
+	unset USE_CCACHE
+fi
