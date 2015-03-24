@@ -60,11 +60,18 @@ function setup_ccache(){
 		echo "setting ccache directory $ANDROID_CCACHE_DIR"
 		export CCACHE_DIR=$ANDROID_CCACHE_DIR
 		export USE_CCACHE=1
+		if [ ! -z $TOP ] ; then
+		    $TOP/prebuilts/misc/linux-x86/ccache/ccache -M $ANDROID_CCACHE_SIZE
+		fi
+
+
 	else
 		unset CCACHE_DIR
 		unset USE_CCACHE
 	fi
 }
 
+export TOP=$(gettop)
 setup_ccache
+
 
