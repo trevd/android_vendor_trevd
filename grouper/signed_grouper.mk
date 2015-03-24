@@ -22,3 +22,4 @@ PRODUCT_NAME := signed_grouper
 PRODUCT_PACKAGES += \
     Terminal \
     Launcher3 \
+    PCKeyboard
