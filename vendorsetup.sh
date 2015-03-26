@@ -1,5 +1,3 @@
-source build/envsetup.sh
-
 function _get_adb_device()
 {
 	local TD="device:$( get_build_var TARGET_DEVICE )"
