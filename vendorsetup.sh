@@ -61,15 +61,14 @@ function setup_ccache(){
 		if [ ! -z $TOP ] ; then
 		    $TOP/prebuilts/misc/linux-x86/ccache/ccache -M $ANDROID_CCACHE_SIZE
 		fi
-
-
 	else
+		echo "Warning ccache directory for $ANDROID_BUILD_ID Not Found"
 		unset CCACHE_DIR
 		unset USE_CCACHE
 	fi
 }
-
 export TOP=$(gettop)
+
 setup_ccache
 
 
