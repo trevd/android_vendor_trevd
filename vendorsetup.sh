@@ -67,8 +67,17 @@ function setup_ccache(){
 		unset USE_CCACHE
 	fi
 }
+function copy_local_manifests(){
+
+	mkdir -p $TOP/.repo/local_manifests && echo "Making Local Manifests Directory" && \
+	cp -vr $TOP/vendor/*/manifests/*.xml  $TOP/.repo/local_manifests
+
+}
+unset TOP
 export TOP=$(gettop)
 
+
 setup_ccache
+copy_local_manifests
 
 
