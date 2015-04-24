@@ -83,24 +83,25 @@ function add_prebuilts_paths(){
 	
 	# We need to export the path to gcc and cc1 for the host toolchain to function 
 	local host_tc_paths=$( find $host_tc_root -type f -executable \( -name cc1 -or -name gcc \) -printf "%h:" )
-    if [ -n "$local host_tc_paths" ] ; then
-        export PATH=${PATH/$local host_tc_paths/}
+    if [ -n "$host_tc_paths" ] ; then
+        export PATH=${PATH/$host_tc_paths/}
     fi
 	
 	# Export the BISON_PKGDATADIR variable from the Build System
 	unset BISON_PKGDATADIR
 	export BISON_PKGDATADIR=$( get_build_var BISON_PKGDATADIR )
 	
-	# Add the location of the prebuilt bison binary to the PATH
-	local host_bison_path=$( get_abs_build_var BISON | xargs dirname ):$( get_build_var BISON_PKGDATADIR ):
-	if [ -n "$host_bison_path" ] ; then
-        export PATH=${PATH/$host_bison_path/}
+	# Add prebuilt misc tools binary locations to the PATH
+	local prebuilt_misc_root=$TOP/prebuilts/misc/$( get_build_var HOST_PREBUILTS_TAG )
+	local prebuilt_misc_paths=$( find $prebuilt_misc_root -type f -executable -printf "%h:\0" | uniq -z )
+	if [ -n "$prebuilt_misc_paths" ] ; then
+        export PATH=${PATH/$prebuilt_misc_paths/}
     fi
 	
 	# strip leading ':', if any
     export PATH=${PATH/:%/}
 	
-	export PATH=$host_tc_paths$host_bison_path$PATH
+	export PATH=$host_tc_paths$prebuilt_misc_paths$PATH
 
 }
 function copy_local_manifests(){
