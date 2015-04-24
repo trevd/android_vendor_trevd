@@ -67,6 +67,42 @@ function setup_ccache(){
 		unset USE_CCACHE
 	fi
 }
+# add_prebuilts_paths 
+# This function will be run as part of the build/envsetup.sh proceedure
+# It's main purpose is the add a path to the host toolchain and bison binaries
+# This lets the chromium_org "build system" function correctly without
+# installing gcc and bison on the host operating system
+function add_prebuilts_paths(){
+	
+
+	# Get the toolchain root from the HOST_TOOLCHAIN_PREFIX
+	# The build system should really have an HOST_TOOLCHAIN_ROOT variable.
+	# In the meantime we will do a cheeky double dirname to remove the prefix 
+	# and the last directory
+	local host_tc_root=$( get_abs_build_var HOST_TOOLCHAIN_PREFIX | xargs dirname | xargs dirname )
+	
+	# We need to export the path to gcc and cc1 for the host toolchain to function 
+	local host_tc_paths=$( find $host_tc_root -type f -executable \( -name cc1 -or -name gcc \) -printf "%h:" )
+    if [ -n "$local host_tc_paths" ] ; then
+        export PATH=${PATH/$local host_tc_paths/}
+    fi
+	
+	# Export the BISON_PKGDATADIR variable from the Build System
+	unset BISON_PKGDATADIR
+	export BISON_PKGDATADIR=$( get_build_var BISON_PKGDATADIR )
+	
+	# Add the location of the prebuilt bison binary to the PATH
+	local host_bison_path=$( get_abs_build_var BISON | xargs dirname ):$( get_build_var BISON_PKGDATADIR ):
+	if [ -n "$host_bison_path" ] ; then
+        export PATH=${PATH/$host_bison_path/}
+    fi
+	
+	# strip leading ':', if any
+    export PATH=${PATH/:%/}
+	
+	export PATH=$host_tc_paths$host_bison_path$PATH
+
+}
 function copy_local_manifests(){
 
 	mkdir -p $TOP/.repo/local_manifests && echo "Making Local Manifests Directory" && \
@@ -76,8 +112,7 @@ function copy_local_manifests(){
 unset TOP
 export TOP=$(gettop)
 
-
 setup_ccache
 copy_local_manifests
-
+add_prebuilts_paths
 
