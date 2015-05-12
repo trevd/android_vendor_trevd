@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+    <project name="kernel/tegra"  path="kernel/tegra/grouper" revision="android-tegra3-grouper-3.1-lollipop-mr1"/>
+    <project name="kernel/tegra"  path="kernel/tegra/flounder" revision="android-tegra-flounder-3.10-lollipop-mr1"/>
+    <project name="kernel/msm"  path="kernel/msm/mako" revision="android-msm-mako-3.4-lollipop-mr1"/>
+</manifest>

@@ -115,5 +115,5 @@ export TOP=$(gettop)
 
 setup_ccache
 copy_local_manifests
-add_prebuilts_paths
+#add_prebuilts_paths
 
