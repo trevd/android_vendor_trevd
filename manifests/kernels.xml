@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest>
     <project name="kernel/x86_64"  path="linux/kernel-fugu" revision="android-x86_64-fugu-3.10-lollipop-mr1"/>
+    <project name="kernel/tegra"  path="linux/kernel-flounder" revision="android-tegra-flounder-3.10-lollipop-mr1"/>
+    <project name="kernel/msm"  path="linux/kernel-mako" revision="android-msm-mako-3.4-lollipop-mr1"/>
 </manifest>
